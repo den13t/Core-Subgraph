@@ -1,0 +1,45 @@
+specVersion: 0.0.2
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: CORE
+    network: mainnet
+    source:
+      address: "0x62359Ed7505Efc61FF1D56fEF82158CcaffA23D7"
+      abi: CORE
+      startBlock: 10894081
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - Approval
+        - DelegateChanged
+        - DelegateVotesChanged
+        - LPTokenClaimed
+        - LiquidityAddition
+        - Log
+        - OwnershipTransferred
+        - Transfer
+      abis:
+        - name: CORE
+          file: ./abis/CORE.json
+      eventHandlers:
+        - event: Approval(indexed address,indexed address,uint256)
+          handler: handleApproval
+        - event: DelegateChanged(indexed address,indexed address,indexed address)
+          handler: handleDelegateChanged
+        - event: DelegateVotesChanged(indexed address,uint256,uint256)
+          handler: handleDelegateVotesChanged
+        - event: LPTokenClaimed(address,uint256)
+          handler: handleLPTokenClaimed
+        - event: LiquidityAddition(indexed address,uint256)
+          handler: handleLiquidityAddition
+        - event: Log(string)
+          handler: handleLog
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+      file: ./src/mapping.ts
